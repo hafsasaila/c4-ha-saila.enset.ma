@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX 03 — Flexbox</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0b0e14;--bg2:#111520;--bg3:#161b26;--card:#1a2030;--card2:#1f2840;--border:rgba(100,140,255,.12);--border2:rgba(100,140,255,.25);--accent:#4f7fff;--accent2:#7fb8ff;--green:#3ddc84;--green2:#86efac;--amber:#f59e0b;--text:#e2e8f4;--text2:#8899bb;--text3:#5c6e8a;--mono:'Space Mono',monospace;--sans:'Sora',sans-serif;--r:10px;--r2:16px}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;font-size:15px}
+  .page-header{background:linear-gradient(135deg,#0d1425,#0f1a35 50%,#0b1528);border-bottom:1px solid var(--border2);padding:40px;position:relative;overflow:hidden}
+  .page-header::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(79,127,255,.12),transparent 70%);border-radius:50%}
+  .tag{display:inline-block;background:rgba(79,127,255,.15);border:1px solid rgba(79,127,255,.3);color:var(--accent2);font-family:var(--mono);font-size:11px;padding:4px 12px;border-radius:20px;margin-bottom:16px;letter-spacing:.05em}
+  h1{font-size:clamp(24px,4vw,38px);font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:8px}
+  h1 span{color:var(--accent2)}
+  .sub{color:var(--text2);font-family:var(--mono);font-size:13px;margin-top:12px;display:flex;gap:16px;flex-wrap:wrap}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px}
+  main{max-width:860px;margin:0 auto;padding:40px}
+  .section-hdr{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .sec-num{font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(79,127,255,.1);border:1px solid rgba(79,127,255,.2);border-radius:6px;padding:5px 10px;flex-shrink:0;margin-top:3px}
+  .sec-title h2{font-size:20px;font-weight:600;color:#fff}
+  .sec-title p{color:var(--text2);font-size:13px;margin-top:3px}
+  .badge{font-family:var(--mono);font-size:11px;color:#fcd34d;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:20px;padding:4px 10px;flex-shrink:0}
+  .qa{margin-bottom:18px;background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+  .qbar{background:var(--bg3);padding:13px 18px;font-size:13px;color:var(--text2);font-family:var(--mono);display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid var(--border)}
+  .qn{color:var(--accent);font-weight:700;flex-shrink:0}
+  .ans{padding:18px}
+  .alabel{font-size:10px;font-family:var(--mono);color:var(--green);letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .alabel::before{content:'';display:block;width:14px;height:1px;background:var(--green)}
+  .code{background:#0a0d14;border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;font-family:var(--mono);font-size:12px;line-height:1.8;color:#c9d6f0;overflow-x:auto;margin:10px 0}
+  .cs{color:#a3d1ff}.cp{color:#7fb8ff}.cv{color:#86efac}.cn{color:#fcd34d}.cc{color:#4a5568;font-style:italic}
+  ic{font-family:var(--mono);font-size:11px;background:rgba(79,127,255,.1);border:1px solid rgba(79,127,255,.2);color:var(--accent2);padding:2px 6px;border-radius:4px}
+  .demo{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin:14px 0}
+  .demo-lbl{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.1em;margin-bottom:14px;text-transform:uppercase}
+  /* Navbar demo */
+  .demo-navbar{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:0 18px;height:50px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+  .demo-logo{font-family:var(--mono);font-weight:700;color:var(--accent2);font-size:14px}
+  .demo-links{display:flex;gap:0;list-style:none}
+  .demo-links a{display:block;padding:7px 13px;color:var(--text2);text-decoration:none;font-size:13px;border-radius:6px;transition:all .2s}
+  .demo-links a:hover{background:rgba(79,127,255,.1);color:var(--accent2)}
+  /* Cards demo */
+  .demo-cards{display:flex;gap:14px}
+  .demo-card{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:18px;display:flex;flex-direction:column}
+  .demo-card h4{font-size:14px;color:#fff;margin-bottom:7px}
+  .demo-card p{font-size:12px;color:var(--text2);flex:1;line-height:1.6}
+  .demo-card-link{display:block;margin-top:14px;background:rgba(79,127,255,.15);border:1px solid rgba(79,127,255,.3);color:var(--accent2);padding:7px 13px;border-radius:6px;text-align:center;font-size:12px;font-family:var(--mono);text-decoration:none;transition:background .2s}
+  .demo-card-link:hover{background:rgba(79,127,255,.25)}
+  footer{border-top:1px solid var(--border);padding:24px 40px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--text3)}
+  .nav-back{display:inline-flex;align-items:center;gap:8px;color:var(--accent2);font-family:var(--mono);font-size:12px;text-decoration:none;margin-bottom:24px;padding:8px 14px;background:rgba(79,127,255,.08);border:1px solid rgba(79,127,255,.2);border-radius:8px;transition:background .2s}
+  .nav-back:hover{background:rgba(79,127,255,.16)}
+</style>
+</head>
+<body>
+<header class="page-header">
+  <div style="max-width:860px;margin:0 auto;position:relative">
+    <div class="tag">EX 03 · CSS3 · ENSET Mohammedia</div>
+    <h1>Flexbox<br><span>Mise en page unidimensionnelle</span></h1>
+    <div class="sub">
+      <span><span class="dot"></span>Abdelaziz DAAIF</span>
+      <span><span class="dot" style="background:var(--amber)"></span>Module : Technologies Web</span>
+      <span><span class="dot" style="background:#ec4899"></span>Durée : 30 min</span>
+    </div>
+  </div>
+</header>
+<main>
+  <a class="nav-back" href="index.html">← Retour au sommaire</a>
+
+  <div style="margin-bottom:48px">
+    <div class="section-hdr">
+      <div class="sec-num">3.1</div>
+      <div class="sec-title"><h2>Barre de navigation</h2><p>Logo à gauche, liens à droite</p></div>
+      <div class="badge">⏱ 15 min</div>
+    </div>
+
+    <div class="qa">
+      <div class="qbar"><span class="qn">Q1</span>Barre de navigation horizontale avec logo à gauche et liens à droite</div>
+      <div class="ans">
+        <div class="alabel">SOLUTION CSS</div>
+        <div class="code"><span class="cs">.navbar</span> {
+  <span class="cp">display</span>: <span class="cv">flex</span>;
+  <span class="cp">align-items</span>: <span class="cv">center</span>;
+  <span class="cp">justify-content</span>: <span class="cv">space-between</span>;
+  <span class="cp">padding</span>: <span class="cv">0 20px</span>;
+  <span class="cp">height</span>: <span class="cv">60px</span>;
+  <span class="cp">background</span>: <span class="cv">#1a1d23</span>;
+}
+<span class="cs">.nav-links</span> {
+  <span class="cp">display</span>: <span class="cv">flex</span>;
+  <span class="cp">gap</span>: <span class="cv">8px</span>;
+  <span class="cp">list-style</span>: <span class="cv">none</span>;
+  <span class="cp">margin</span>: <span class="cv">0</span>;
+  <span class="cp">padding</span>: <span class="cv">0</span>;
+}</div>
+        <div class="demo">
+          <div class="demo-lbl">RENDU EN DIRECT</div>
+          <nav class="demo-navbar">
+            <div class="demo-logo">MonSite</div>
+            <ul class="demo-links">
+              <li><a href="#">Accueil</a></li>
+              <li><a href="#">Services</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-hdr">
+      <div class="sec-num">3.2</div>
+      <div class="sec-title"><h2>Cartes de même hauteur</h2><p>Footer toujours en bas de chaque carte</p></div>
+      <div class="badge">⏱ 15 min</div>
+    </div>
+
+    <div class="qa">
+      <div class="qbar"><span class="qn">Q2</span>3 cartes côte à côte avec footer toujours en bas</div>
+      <div class="ans">
+        <div class="alabel">SOLUTION CSS</div>
+        <div class="code"><span class="cs">.cards</span> {
+  <span class="cp">display</span>: <span class="cv">flex</span>;
+  <span class="cp">gap</span>: <span class="cv">20px</span>;
+}
+<span class="cs">.card</span> {
+  <span class="cp">flex</span>: <span class="cv">1</span>;           <span class="cc">/* cartes de même largeur */</span>
+  <span class="cp">display</span>: <span class="cv">flex</span>;
+  <span class="cp">flex-direction</span>: <span class="cv">column</span>; <span class="cc">/* empilement vertical */</span>
+  <span class="cp">padding</span>: <span class="cv">20px</span>;
+  <span class="cp">border</span>: <span class="cv">1px solid #e0e0e0</span>;
+  <span class="cp">border-radius</span>: <span class="cv">8px</span>;
+}
+<span class="cs">.card p</span> {
+  <span class="cp">flex</span>: <span class="cv">1</span>; <span class="cc">/* prend tout l'espace → pousse le bouton vers le bas */</span>
+}
+<span class="cs">.card-link</span> {
+  <span class="cp">margin-top</span>: <span class="cv">auto</span>; <span class="cc">/* alternative à flex:1 sur le paragraphe */</span>
+  <span class="cp">display</span>: <span class="cv">block</span>;
+  <span class="cp">padding</span>: <span class="cv">8px 16px</span>;
+  <span class="cp">text-align</span>: <span class="cv">center</span>;
+}</div>
+        <div class="demo">
+          <div class="demo-lbl">RENDU EN DIRECT — boutons alignés en bas malgré le contenu variable</div>
+          <div class="demo-cards">
+            <div class="demo-card">
+              <h4>Carte 1</h4>
+              <p>Contenu court.</p>
+              <a href="#" class="demo-card-link">En savoir plus</a>
+            </div>
+            <div class="demo-card">
+              <h4>Carte 2</h4>
+              <p>Contenu beaucoup plus long pour tester l'alignement vertical des boutons dans les cartes Flexbox.</p>
+              <a href="#" class="demo-card-link">En savoir plus</a>
+            </div>
+            <div class="demo-card">
+              <h4>Carte 3</h4>
+              <p>Contenu moyen.</p>
+              <a href="#" class="demo-card-link">En savoir plus</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>EX 03 · Flexbox · ENSET Mohammedia · Abdelaziz DAAIF</footer>
+</body>
+</html>
