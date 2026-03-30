@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EX 05-06-07 — Responsive · Variables CSS · Animations</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0b0e14;--bg2:#111520;--bg3:#161b26;--card:#1a2030;--card2:#1f2840;--border:rgba(100,140,255,.12);--border2:rgba(100,140,255,.25);--accent:#4f7fff;--accent2:#7fb8ff;--green:#3ddc84;--green2:#86efac;--amber:#f59e0b;--text:#e2e8f4;--text2:#8899bb;--text3:#5c6e8a;--mono:'Space Mono',monospace;--sans:'Sora',sans-serif;--r:10px;--r2:16px}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;font-size:15px}
+  .page-header{background:linear-gradient(135deg,#0d1425,#0f1a35 50%,#0b1528);border-bottom:1px solid var(--border2);padding:40px;position:relative;overflow:hidden}
+  .page-header::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(79,127,255,.12),transparent 70%);border-radius:50%}
+  .tag{display:inline-block;background:rgba(79,127,255,.15);border:1px solid rgba(79,127,255,.3);color:var(--accent2);font-family:var(--mono);font-size:11px;padding:4px 12px;border-radius:20px;margin-bottom:16px;letter-spacing:.05em}
+  h1{font-size:clamp(22px,4vw,36px);font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:8px}
+  h1 span{color:var(--accent2)}
+  .sub{color:var(--text2);font-family:var(--mono);font-size:13px;margin-top:12px;display:flex;gap:16px;flex-wrap:wrap}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px}
+  main{max-width:860px;margin:0 auto;padding:40px}
+  .section{margin-bottom:56px}
+  .section-hdr{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .sec-num{font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(79,127,255,.1);border:1px solid rgba(79,127,255,.2);border-radius:6px;padding:5px 10px;flex-shrink:0;margin-top:3px}
+  .sec-title h2{font-size:20px;font-weight:600;color:#fff}
+  .sec-title p{color:var(--text2);font-size:13px;margin-top:3px}
+  .badge{font-family:var(--mono);font-size:11px;color:#fcd34d;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:20px;padding:4px 10px;flex-shrink:0}
+  .qa{margin-bottom:18px;background:var(--card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+  .qbar{background:var(--bg3);padding:13px 18px;font-size:13px;color:var(--text2);font-family:var(--mono);display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid var(--border)}
+  .qn{color:var(--accent);font-weight:700;flex-shrink:0}
+  .ans{padding:18px}
+  .alabel{font-size:10px;font-family:var(--mono);color:var(--green);letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .alabel::before{content:'';display:block;width:14px;height:1px;background:var(--green)}
+  .code{background:#0a0d14;border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;font-family:var(--mono);font-size:12px;line-height:1.8;color:#c9d6f0;overflow-x:auto;margin:10px 0}
+  .cs{color:#a3d1ff}.cp{color:#7fb8ff}.cv{color:#86efac}.cn{color:#fcd34d}.cc{color:#4a5568;font-style:italic}.cat{color:#ec4899}.cmed{color:#d946ef}.cvar{color:#f97316}
+  ic{font-family:var(--mono);font-size:11px;background:rgba(79,127,255,.1);border:1px solid rgba(79,127,255,.2);color:var(--accent2);padding:2px 6px;border-radius:4px}
+  .note{background:rgba(79,127,255,.06);border:1px solid rgba(79,127,255,.2);border-left:3px solid var(--accent);border-radius:var(--r);padding:12px 16px;font-size:13px;color:var(--text2);margin:12px 0;line-height:1.6}
+  .note strong{color:var(--accent2)}
+  .demo{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin:14px 0}
+  .demo-lbl{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.1em;margin-bottom:14px;text-transform:uppercase}
+  /* RWD demo */
+  .rwd-wrap{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+  .rwd-device{border:2px solid var(--border2);border-radius:10px;overflow:hidden;flex-shrink:0}
+  .rwd-device.mobile{width:110px}
+  .rwd-device.tablet{width:200px}
+  .rwd-device.desktop{flex:1;min-width:260px}
+  .rwd-bar{background:var(--bg3);padding:5px 9px;font-family:var(--mono);font-size:10px;color:var(--text3);border-bottom:1px solid var(--border)}
+  .rwd-content{padding:9px}
+  .rwd-nav-v{display:flex;flex-direction:column;gap:3px}
+  .rwd-nav-h{display:flex;flex-direction:row;gap:3px}
+  .rwd-pill{background:rgba(79,127,255,.15);border-radius:4px;padding:4px 7px;font-family:var(--mono);font-size:10px;color:var(--accent2);text-align:center}
+  .rwd-block{background:rgba(255,255,255,.04);border-radius:4px;padding:7px;margin-top:5px}
+  .rwd-sidebar{background:rgba(61,220,132,.06);border-radius:4px;padding:5px;font-family:var(--mono);font-size:9px;color:var(--green)}
+  /* Theme demo */
+  .theme-row{display:flex;gap:14px;flex-wrap:wrap}
+  .tcard{flex:1;min-width:150px;border-radius:10px;padding:14px;border:1px solid transparent}
+  .tcard.light{background:#f8f9fa;border-color:#dee2e6}
+  .tcard.dark{background:#1a1d23;border-color:#2d3139}
+  .tcard h5{font-size:13px;margin-bottom:7px}
+  .tcard.light h5{color:#1a1d23}
+  .tcard.dark h5{color:#e9ecef}
+  .tswatch{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+  .tsw{width:22px;height:22px;border-radius:4px}
+  /* Button demo */
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .dbtn{padding:11px 22px;border-radius:8px;font-family:var(--mono);font-size:13px;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);border:none;font-weight:700;letter-spacing:.02em}
+  .dbtn.primary{background:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(79,127,255,.3)}
+  .dbtn.primary:hover{background:#6b93ff;transform:translateY(-2px) scale(1.03);box-shadow:0 6px 20px rgba(79,127,255,.45)}
+  .dbtn.primary:active{transform:translateY(0) scale(.98)}
+  .dbtn.outline{background:transparent;color:var(--accent2);border:1.5px solid rgba(79,127,255,.4)}
+  .dbtn.outline:hover{background:rgba(79,127,255,.1);border-color:var(--accent);transform:translateY(-1px)}
+  /* Spinner */
+  .spin-row{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+  .spinner{width:34px;height:34px;border:3px solid rgba(79,127,255,.15);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+  .dots-wrap{display:flex;align-items:center;gap:5px}
+  .dots-wrap span{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse-dot 1.2s ease-in-out infinite}
+  .dots-wrap span:nth-child(2){animation-delay:.2s}
+  .dots-wrap span:nth-child(3){animation-delay:.4s}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes pulse-dot{0%,80%,100%{transform:scale(.6);opacity:.5}40%{transform:scale(1);opacity:1}}
+  footer{border-top:1px solid var(--border);padding:24px 40px;text-align:center;font-family:var(--mono);font-size:11px;color:var(--text3)}
+  .nav-back{display:inline-flex;align-items:center;gap:8px;color:var(--accent2);font-family:var(--mono);font-size:12px;text-decoration:none;margin-bottom:24px;padding:8px 14px;background:rgba(79,127,255,.08);border:1px solid rgba(79,127,255,.2);border-radius:8px;transition:background .2s}
+  .nav-back:hover{background:rgba(79,127,255,.16)}
+</style>
+</head>
+<body>
+<header class="page-header">
+  <div style="max-width:860px;margin:0 auto;position:relative">
+    <div class="tag">EX 05–06–07 · CSS3 · ENSET Mohammedia</div>
+    <h1>Responsive &middot; Variables CSS<br><span>&amp; Animations</span></h1>
+    <div class="sub">
+      <span><span class="dot"></span>Abdelaziz DAAIF</span>
+      <span><span class="dot" style="background:var(--amber)"></span>Module : Technologies Web</span>
+      <span><span class="dot" style="background:#ec4899"></span>Durée : 65 min</span>
+    </div>
+  </div>
+</header>
+<main>
+  <a class="nav-back" href="index.html">← Retour au sommaire</a>
+
+  <!-- EX 5 -->
+  <div class="section">
+    <div class="section-hdr">
+      <div class="sec-num">EX 05</div>
+      <div class="sec-title"><h2>Responsive Design — Mobile First</h2><p>Media queries min-width</p></div>
+      <div class="badge">⏱ 25 min</div>
+    </div>
+
+    <div class="qa">
+      <div class="qbar"><span class="qn">Q1</span>CSS complet Mobile First avec media queries tablette et desktop</div>
+      <div class="ans">
+        <div class="alabel">SOLUTION CSS</div>
+        <div class="code"><span class="cc">/* ===== BASE MOBILE (par défaut) ===== */</span>
+<span class="cs">.container</span> {
+  <span class="cp">width</span>: <span class="cv">100%</span>;
+  <span class="cp">padding</span>: <span class="cv">15px</span>;
+}
+<span class="cs">.nav-menu</span> {
+  <span class="cp">display</span>: <span class="cv">flex</span>;
+  <span class="cp">flex-direction</span>: <span class="cv">column</span>; <span class="cc">/* vertical sur mobile */</span>
+  <span class="cp">gap</span>: <span class="cv">5px</span>;
+}
+<span class="cs">.content</span> { <span class="cp">display</span>: <span class="cv">block</span>; }
+<span class="cs">.sidebar</span> { <span class="cp">display</span>: <span class="cv">none</span>; } <span class="cc">/* cachée sur mobile */</span>
+
+<span class="cc">/* ===== TABLETTE ≥ 768px ===== */</span>
+<span class="cat">@media</span> (<span class="cmed">min-width</span>: <span class="cn">768px</span>) {
+  <span class="cs">.container</span> {
+    <span class="cp">max-width</span>: <span class="cv">720px</span>;
+    <span class="cp">margin</span>: <span class="cv">0 auto</span>;
+    <span class="cp">padding</span>: <span class="cv">20px</span>;
+  }
+  <span class="cs">.nav-menu</span> {
+    <span class="cp">flex-direction</span>: <span class="cv">row</span>; <span class="cc">/* horizontal sur tablette+ */</span>
+    <span class="cp">gap</span>: <span class="cv">12px</span>;
+  }
+  <span class="cs">.content</span> {
+    <span class="cp">display</span>: <span class="cv">grid</span>;
+    <span class="cp">grid-template-columns</span>: <span class="cv">1fr 200px</span>;
+    <span class="cp">gap</span>: <span class="cv">20px</span>;
+  }
+  <span class="cs">.sidebar</span> { <span class="cp">display</span>: <span class="cv">block</span>; }
+}
+
+<span class="cc">/* ===== DESKTOP ≥ 1024px ===== */</span>
+<span class="cat">@media</span> (<span class="cmed">min-width</span>: <span class="cn">1024px</span>) {
+  <span class="cs">.container</span> { <span class="cp">max-width</span>: <span class="cv">960px</span>; }
+  <span class="cs">.content</span> {
+    <span class="cp">grid-template-columns</span>: <span class="cv">1fr 280px</span>;
+    <span class="cp">gap</span>: <span class="cv">32px</span>;
+  }
+  <span class="cs">.nav-menu</span> { <span class="cp">gap</span>: <span class="cv">20px</span>; }
+}</div>
+        <div class="demo">
+          <div class="demo-lbl">VISUALISATION DES BREAKPOINTS</div>
+          <div class="rwd-wrap">
+            <div class="rwd-device mobile">
+              <div class="rwd-bar">📱 &lt; 768px</div>
+              <div class="rwd-content">
+                <div class="rwd-nav-v">
+                  <div class="rwd-pill">Accueil</div>
+                  <div class="rwd-pill">Services</div>
+                  <div class="rwd-pill">Contact</div>
+                </div>
+                <div class="rwd-block" style="font-family:var(--mono);font-size:9px;color:var(--text3)">Main</div>
+              </div>
+            </div>
+            <div class="rwd-device tablet">
+              <div class="rwd-bar">📲 ≥ 768px</div>
+              <div class="rwd-content">
+                <div class="rwd-nav-h">
+                  <div class="rwd-pill">Accueil</div>
+                  <div class="rwd-pill">Services</div>
+                  <div class="rwd-pill">Contact</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 46px;gap:5px;margin-top:5px">
+                  <div class="rwd-block" style="font-family:var(--mono);font-size:9px;color:var(--text3)">Main</div>
+                  <div class="rwd-sidebar">Side</div>
+                </div>
+              </div>
+            </div>
+            <div class="rwd-device desktop">
+              <div class="rwd-bar">🖥 ≥ 1024px</div>
+              <div class="rwd-content">
+                <div class="rwd-nav-h">
+                  <div class="rwd-pill">Accueil</div>
+                  <div class="rwd-pill">Services</div>
+                  <div class="rwd-pill">Contact</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 66px;gap:7px;margin-top:5px">
+                  <div class="rwd-block" style="font-family:var(--mono);font-size:9px;color:var(--text3)">Main content</div>
+                  <div class="rwd-sidebar">Sidebar</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EX 6 -->
+  <div class="section">
+    <div class="section-hdr">
+      <div class="sec-num">EX 06</div>
+      <div class="sec-title"><h2>Variables CSS &amp; Thèmes</h2><p>Design tokens pour thème clair et sombre</p></div>
+      <div class="badge">⏱ 20 min</div>
+    </div>
+
+    <div class="qa">
+      <div class="qbar"><span class="qn">Q1</span>Système de variables CSS pour thème clair et sombre</div>
+      <div class="ans">
+        <div class="alabel">SOLUTION CSS</div>
+        <div class="code"><span class="cc">/* ===== THÈME CLAIR (défaut) ===== */</span>
+<span class="cs">:root</span> {
+  <span class="cvar">--color-primary</span>: <span class="cv">#2563eb</span>;
+  <span class="cvar">--color-primary-hover</span>: <span class="cv">#1d4ed8</span>;
+  <span class="cvar">--bg-base</span>: <span class="cv">#ffffff</span>;
+  <span class="cvar">--bg-surface</span>: <span class="cv">#f8f9fa</span>;
+  <span class="cvar">--text-primary</span>: <span class="cv">#111827</span>;
+  <span class="cvar">--text-secondary</span>: <span class="cv">#6b7280</span>;
+  <span class="cvar">--border-color</span>: <span class="cv">#e5e7eb</span>;
+  <span class="cvar">--radius-base</span>: <span class="cv">8px</span>;
+  <span class="cvar">--shadow-base</span>: <span class="cv">0 1px 3px rgba(0,0,0,0.1)</span>;
+}
+
+<span class="cc">/* ===== THÈME SOMBRE ===== */</span>
+<span class="cs">[data-theme="dark"]</span> {
+  <span class="cvar">--color-primary</span>: <span class="cv">#60a5fa</span>;
+  <span class="cvar">--color-primary-hover</span>: <span class="cv">#93c5fd</span>;
+  <span class="cvar">--bg-base</span>: <span class="cv">#0f172a</span>;
+  <span class="cvar">--bg-surface</span>: <span class="cv">#1e293b</span>;
+  <span class="cvar">--text-primary</span>: <span class="cv">#f1f5f9</span>;
+  <span class="cvar">--text-secondary</span>: <span class="cv">#94a3b8</span>;
+  <span class="cvar">--border-color</span>: <span class="cv">#334155</span>;
+  <span class="cvar">--shadow-base</span>: <span class="cv">0 1px 3px rgba(0,0,0,0.4)</span>;
+}
+
+<span class="cc">/* OU : préférence système */</span>
+<span class="cat">@media</span> (<span class="cmed">prefers-color-scheme</span>: dark) {
+  <span class="cs">:root</span> { <span class="cc">/* mêmes variables dark... */</span> }
+}
+
+<span class="cc">/* Utilisation dans les composants */</span>
+<span class="cs">.card</span> {
+  <span class="cp">background</span>: <span class="cv">var(--bg-surface)</span>;
+  <span class="cp">border</span>: <span class="cv">1px solid var(--border-color)</span>;
+  <span class="cp">color</span>: <span class="cv">var(--text-primary)</span>;
+  <span class="cp">border-radius</span>: <span class="cv">var(--radius-base)</span>;
+}</div>
+        <div class="demo">
+          <div class="demo-lbl">APERÇU DES DEUX THÈMES</div>
+          <div class="theme-row">
+            <div class="tcard light">
+              <h5>☀️ Thème clair</h5>
+              <div class="tswatch">
+                <div class="tsw" style="background:#2563eb"></div>
+                <div class="tsw" style="background:#fff;border:1px solid #e5e7eb"></div>
+                <div class="tsw" style="background:#f8f9fa;border:1px solid #e5e7eb"></div>
+                <div class="tsw" style="background:#111827"></div>
+                <div class="tsw" style="background:#6b7280"></div>
+              </div>
+            </div>
+            <div class="tcard dark">
+              <h5 style="color:#e9ecef">🌙 Thème sombre</h5>
+              <div class="tswatch">
+                <div class="tsw" style="background:#60a5fa"></div>
+                <div class="tsw" style="background:#0f172a;border:1px solid #334155"></div>
+                <div class="tsw" style="background:#1e293b;border:1px solid #334155"></div>
+                <div class="tsw" style="background:#f1f5f9"></div>
+                <div class="tsw" style="background:#94a3b8"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EX 7 -->
+  <div class="section">
+    <div class="section-hdr">
+      <div class="sec-num">EX 07</div>
+      <div class="sec-title"><h2>Transitions &amp; Animations CSS</h2><p>@keyframes et transition</p></div>
+      <div class="badge">⏱ 20 min</div>
+    </div>
+
+    <div class="qa">
+      <div class="qbar"><span class="qn">Q1</span>Bouton avec transitions au survol</div>
+      <div class="ans">
+        <div class="alabel">SOLUTION CSS</div>
+        <div class="code"><span class="cs">.btn</span> {
+  <span class="cp">display</span>: <span class="cv">inline-block</span>;
+  <span class="cp">padding</span>: <span class="cv">12px 28px</span>;
+  <span class="cp">background</span>: <span class="cv">#2563eb</span>;
+  <span class="cp">color</span>: <span class="cv">#fff</span>;
+  <span class="cp">border</span>: <span class="cv">none</span>;
+  <span class="cp">border-radius</span>: <span class="cv">8px</span>;
+  <span class="cp">font-size</span>: <span class="cv">15px</span>;
+  <span class="cp">font-weight</span>: <span class="cv">600</span>;
+  <span class="cp">cursor</span>: <span class="cv">pointer</span>;
+  <span class="cp">box-shadow</span>: <span class="cv">0 2px 8px rgba(37,99,235,0.3)</span>;
+  <span class="cp">transition</span>:
+    <span class="cv">background-color 0.25s ease</span>,
+    <span class="cv">transform 0.2s ease</span>,
+    <span class="cv">box-shadow 0.25s ease</span>;
+}
+<span class="cs">.btn:hover</span> {
+  <span class="cp">background</span>: <span class="cv">#1d4ed8</span>;
+  <span class="cp">transform</span>: <span class="cv">translateY(-2px) scale(1.03)</span>;
+  <span class="cp">box-shadow</span>: <span class="cv">0 6px 20px rgba(37,99,235,0.45)</span>;
+}
+<span class="cs">.btn:active</span> {
+  <span class="cp">transform</span>: <span class="cv">translateY(0) scale(0.98)</span>;
+}
+<span class="cs">.btn:focus-visible</span> {
+  <span class="cp">outline</span>: <span class="cv">3px solid rgba(37,99,235,0.5)</span>;
+  <span class="cp">outline-offset</span>: <span class="cv">2px</span>;
+}</div>
+        <div class="demo">
+          <div class="demo-lbl">ESSAYEZ LES BOUTONS</div>
+          <div class="btn-row">
+            <button class="dbtn primary">Survol + clic</button>
+            <button class="dbtn outline">Variante outline</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qbar"><span class="qn">Q2</span>Spinner de chargement avec <ic>@keyframes</ic></div>
+      <div class="ans">
+        <div class="alabel">SOLUTION CSS</div>
+        <div class="code"><span class="cc">/* ① Spinner classique */</span>
+<span class="cat">@keyframes</span> <span class="cvar">spin</span> {
+  <span class="cs">from</span> { <span class="cp">transform</span>: <span class="cv">rotate(0deg)</span>; }
+  <span class="cs">to</span>   { <span class="cp">transform</span>: <span class="cv">rotate(360deg)</span>; }
+}
+<span class="cs">.spinner</span> {
+  <span class="cp">width</span>: <span class="cv">36px</span>; <span class="cp">height</span>: <span class="cv">36px</span>;
+  <span class="cp">border</span>: <span class="cv">3px solid rgba(37,99,235,0.15)</span>;
+  <span class="cp">border-top-color</span>: <span class="cv">#2563eb</span>;
+  <span class="cp">border-radius</span>: <span class="cv">50%</span>;
+  <span class="cp">animation</span>: <span class="cv">spin 0.8s linear infinite</span>;
+}
+
+<span class="cc">/* ② Dots loader */</span>
+<span class="cat">@keyframes</span> <span class="cvar">pulse-dot</span> {
+  <span class="cs">0%, 80%, 100%</span> { <span class="cp">transform</span>: <span class="cv">scale(0.6)</span>; <span class="cp">opacity</span>: <span class="cv">0.5</span>; }
+  <span class="cs">40%</span>           { <span class="cp">transform</span>: <span class="cv">scale(1)</span>;   <span class="cp">opacity</span>: <span class="cv">1</span>;   }
+}
+<span class="cs">.dot-1, .dot-2, .dot-3</span> {
+  <span class="cp">width</span>: <span class="cv">8px</span>; <span class="cp">height</span>: <span class="cv">8px</span>;
+  <span class="cp">background</span>: <span class="cv">#2563eb</span>;
+  <span class="cp">border-radius</span>: <span class="cv">50%</span>;
+  <span class="cp">animation</span>: <span class="cv">pulse-dot 1.2s ease-in-out infinite</span>;
+}
+<span class="cs">.dot-2</span> { <span class="cp">animation-delay</span>: <span class="cv">0.2s</span>; }
+<span class="cs">.dot-3</span> { <span class="cp">animation-delay</span>: <span class="cv">0.4s</span>; }
+
+<span class="cc">/* Accessibilité */</span>
+<span class="cat">@media</span> (<span class="cmed">prefers-reduced-motion</span>: reduce) {
+  <span class="cs">.spinner, .dot-1, .dot-2, .dot-3</span> { <span class="cp">animation</span>: <span class="cv">none</span>; }
+}</div>
+        <div class="demo">
+          <div class="demo-lbl">SPINNERS EN DIRECT</div>
+          <div class="spin-row">
+            <div class="spinner"></div>
+            <div class="dots-wrap"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>EX 05–06–07 · Responsive · Variables CSS · Animations · ENSET Mohammedia · Abdelaziz DAAIF</footer>
+</body>
+</html>
